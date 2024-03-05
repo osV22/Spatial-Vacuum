@@ -15,7 +15,13 @@ struct SpatialSweeperApp: App {
         }
 
         ImmersiveSpace(id: "ImmersiveSpace") {
-            ImmersiveView()
+            ImmersiveView<SweeperRealityController>()
         }
+    }
+    
+    init () {
+#if DEBUG
+    Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/xrOSInjection.bundle")?.load()
+#endif
     }
 }

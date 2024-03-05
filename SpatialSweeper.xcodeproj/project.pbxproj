@@ -13,6 +13,9 @@
 		EEC8E2502B968EC800F4AD4D /* ImmersiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC8E24F2B968EC800F4AD4D /* ImmersiveView.swift */; };
 		EEC8E2522B968ECA00F4AD4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEC8E2512B968ECA00F4AD4D /* Assets.xcassets */; };
 		EEC8E2552B968ECA00F4AD4D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEC8E2542B968ECA00F4AD4D /* Preview Assets.xcassets */; };
+		EEC8E25E2B9696E700F4AD4D /* HotReloading in Frameworks */ = {isa = PBXBuildFile; productRef = EEC8E25D2B9696E700F4AD4D /* HotReloading */; };
+		EEC8E2612B96970400F4AD4D /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = EEC8E2602B96970400F4AD4D /* Inject */; };
+		EEC8E2632B969E5100F4AD4D /* SweeperRealityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC8E2622B969E5100F4AD4D /* SweeperRealityController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,7 @@
 		EEC8E2512B968ECA00F4AD4D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EEC8E2542B968ECA00F4AD4D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EEC8E2562B968ECA00F4AD4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EEC8E2622B969E5100F4AD4D /* SweeperRealityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SweeperRealityController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,7 +35,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEC8E25E2B9696E700F4AD4D /* HotReloading in Frameworks */,
 				EEC8E24A2B968EC800F4AD4D /* RealityKitContent in Frameworks */,
+				EEC8E2612B96970400F4AD4D /* Inject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,6 +67,7 @@
 				EEC8E24B2B968EC800F4AD4D /* SpatialSweeperApp.swift */,
 				EEC8E24D2B968EC800F4AD4D /* ContentView.swift */,
 				EEC8E24F2B968EC800F4AD4D /* ImmersiveView.swift */,
+				EEC8E2622B969E5100F4AD4D /* SweeperRealityController.swift */,
 				EEC8E2512B968ECA00F4AD4D /* Assets.xcassets */,
 				EEC8E2562B968ECA00F4AD4D /* Info.plist */,
 				EEC8E2532B968ECA00F4AD4D /* Preview Content */,
@@ -102,6 +109,8 @@
 			name = SpatialSweeper;
 			packageProductDependencies = (
 				EEC8E2492B968EC800F4AD4D /* RealityKitContent */,
+				EEC8E25D2B9696E700F4AD4D /* HotReloading */,
+				EEC8E2602B96970400F4AD4D /* Inject */,
 			);
 			productName = SpatialSweeper;
 			productReference = EEC8E2442B968EC800F4AD4D /* SpatialSweeper.app */;
@@ -131,6 +140,10 @@
 				Base,
 			);
 			mainGroup = EEC8E23B2B968EC800F4AD4D;
+			packageReferences = (
+				EEC8E25C2B9696E700F4AD4D /* XCRemoteSwiftPackageReference "HotReloading" */,
+				EEC8E25F2B96970400F4AD4D /* XCRemoteSwiftPackageReference "Inject" */,
+			);
 			productRefGroup = EEC8E2452B968EC800F4AD4D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -159,6 +172,7 @@
 			files = (
 				EEC8E24E2B968EC800F4AD4D /* ContentView.swift in Sources */,
 				EEC8E24C2B968EC800F4AD4D /* SpatialSweeperApp.swift in Sources */,
+				EEC8E2632B969E5100F4AD4D /* SweeperRealityController.swift in Sources */,
 				EEC8E2502B968EC800F4AD4D /* ImmersiveView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,6 +316,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-interposable",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = osv22.ghalib.SpatialSweeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "xros xrsimulator";
@@ -360,10 +378,39 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		EEC8E25C2B9696E700F4AD4D /* XCRemoteSwiftPackageReference "HotReloading" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/johnno1962/HotReloading.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.12.9;
+			};
+		};
+		EEC8E25F2B96970400F4AD4D /* XCRemoteSwiftPackageReference "Inject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzysztofzablocki/Inject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		EEC8E2492B968EC800F4AD4D /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;
+		};
+		EEC8E25D2B9696E700F4AD4D /* HotReloading */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EEC8E25C2B9696E700F4AD4D /* XCRemoteSwiftPackageReference "HotReloading" */;
+			productName = HotReloading;
+		};
+		EEC8E2602B96970400F4AD4D /* Inject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EEC8E25F2B96970400F4AD4D /* XCRemoteSwiftPackageReference "Inject" */;
+			productName = Inject;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

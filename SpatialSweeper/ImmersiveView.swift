@@ -9,18 +9,34 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 
-struct ImmersiveView: View {
+struct ImmersiveView<SceneController: SceneControllerProtocol>: View {
+    @State var realityKitSceneController:SceneController?
+    
     var body: some View {
-        RealityView { content in
-            // Add the initial RealityKit content
-            if let scene = try? await Entity(named: "Immersive", in: realityKitContentBundle) {
-                content.add(scene)
+        RealityView { content, attachments in
+            self.realityKitSceneController = SceneController()
+            await realityKitSceneController?.firstInit(&content, attachments: attachments)
+        } update: { content, attachments in
+            realityKitSceneController?.updateView(&content, attachments: attachments)
+        } placeholder: {
+            ProgressView()
+        } attachments: {
+            let _ = print("--attachments")
+            Attachment(id: "emptyAttachment") {
             }
         }
+        .gesture(SpatialTapGesture()
+            .targetedToAnyEntity()
+            .onEnded({ targetValue in
+                realityKitSceneController?.onTapSpatial(targetValue)
+            })
+        )
+        .onAppear {
+            // appear happens before realitykit scene ccontroller init
+        }
+        .onDisappear {
+            realityKitSceneController?.cleanup()
+            realityKitSceneController = nil;
+        }
     }
-}
-
-#Preview {
-    ImmersiveView()
-        .previewLayout(.sizeThatFits)
 }
