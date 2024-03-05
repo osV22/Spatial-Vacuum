@@ -61,6 +61,10 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     init() {}
     
     public func firstInit(_ content: inout RealityViewContent, attachments: RealityViewAttachments) async {
+
+        RotateSystem.registerSystem()
+        RotateComponent.registerComponent()
+        
         cancellable = NotificationCenter.default.publisher(for: Notification.Name("INJECTION_BUNDLE_NOTIFICATION"))
             .sink { _ in
                 Task { @MainActor in
@@ -298,7 +302,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         return nil
     }
     
-    // Triggers on EVERY FRAME
+    // triggered on EVERY FRAME
     public func updateFrame(_ event: SceneEvents.Update) {
         if worldTracking.state == .running {
             // AVP position
@@ -308,7 +312,36 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
             }
         }
         
+        if handTracking.state == .running,
+           let rightHand = handTracking.latestAnchors.rightHand,
+           rightHand.isTracked
+        {
+            let transform = Transform(matrix: rightHand.originFromAnchorTransform)
+            
+            let handViz = getVisualizedBox(name: "hand", color: .red, size: 0.02)
+            handViz.transform = transform
+            
+            let handDirection = getVisualizedBox(name: "handDirection", color: .yellow, size: 0.02, parent: handViz)
+            handDirection.position = .init(x: -1.0, y: 0.0, z: 0.0)
+        }
+        
         updateCoins()
+    }
+    
+    private func getVisualizedBox(name: String, color: UIColor, size: Float, parent: Entity? = nil) -> Entity {
+        if let targetEntity = controllerRoot.findEntity(named: name) {
+            return targetEntity
+        }
+        
+        let newEntity = Entity.createEntityBox(color, size: size)
+        newEntity.name = name
+        if let parent = parent {
+            parent.addChild(newEntity)
+        } else {
+            controllerRoot.addChild(newEntity)
+        }
+        
+        return newEntity
     }
     
     public func updateView(_ content: inout RealityViewContent, attachments: RealityViewAttachments) {
@@ -349,7 +382,6 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         
         coin.orientation = .init(angle: .random(in: 0 ... 1), axis: .init(x: 0.0, y: 1.0, z: 0.0))
         coin.position = position
-//        coin.position.y += 0.1
         controllerRoot.addChild(coin)
         coinEntities[key] = coin
         
@@ -360,6 +392,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         if let scene = try? await Entity(named: "SweeperAssets", in: realityKitContentBundle),
            let coin = scene.findEntity(named: "coin")
         {
+            coin.components.set(RotateComponent())
             coinModel = coin
         }
         
