@@ -10,6 +10,7 @@ import SwiftUI
 import RealityKit
 import RealityKitContent
 import Combine
+import ARKit
 
 @MainActor
 protocol SceneControllerProtocol {
@@ -32,6 +33,11 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     
     private var mainScene: Entity?
     
+    private var worldTracking = WorldTrackingProvider()
+    private var handTracking = HandTrackingProvider()
+    private var sceneReconstruction = SceneReconstructionProvider(modes: [.classification])
+    private var session = ARKitSession()
+    
     init() {}
     
     public func firstInit(_ content: inout RealityViewContent, attachments: RealityViewAttachments) async {
@@ -48,10 +54,30 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
             self.updateFrame(event)
         }
         
+        Task {
+            do {
+                try await session.run([worldTracking, handTracking, sceneReconstruction])
+            } catch {
+                print("Error Can't start ARKit \(error)")
+            }
+        }
+        
+        let headContainer = Entity()
+        headContainer.name = "headContainer"
+        controllerRoot.addChild(headContainer)
+        
         setupSceneFirstTime()
     }
     
+    // Triggers on EVERY FRAME
     public func updateFrame(_ event: SceneEvents.Update) {
+        if worldTracking.state == .running {
+            // AVP position
+            if let headPosition = worldTracking.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()),
+               let headContainer = controllerRoot.findEntity(named: "headContainer") {
+                headContainer.transform = Transform(matrix: headPosition.originFromAnchorTransform)
+            }
+        }
     }
     
     public func updateView(_ content: inout RealityViewContent, attachments: RealityViewAttachments) {
@@ -72,6 +98,11 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     }
     
     func setupSceneFirstTime() {
+        if let headContainer = controllerRoot.findEntity(named: "headContainer") {
+            let box = Entity.createEntityBox(.green, size: 0.1)
+            headContainer.addChild(box)
+            box.position.z = -0.4
+        }
     }
     
     func updateAfterInject() {
@@ -80,3 +111,13 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
 }
 
 
+extension Entity {
+    static func createEntityBox(_ color: UIColor, size: Float) -> Entity {
+        let box = Entity()
+        
+        let modelComponent = ModelComponent(mesh: .generateBox(size: size), materials: [UnlitMaterial(color: color)])
+        box.components.set(modelComponent)
+        return box
+        
+    }
+}
