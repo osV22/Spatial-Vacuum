@@ -11,7 +11,6 @@ import RealityKit
 import RealityKitContent
 import Combine
 import ARKit
-import AVFoundation
 
 @MainActor
 protocol SceneControllerProtocol {
@@ -41,7 +40,6 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     
     private var meshEntities = [UUID: ModelEntity]()
     
-    private var colors: [UIColor] = [.red, .blue, .green, .yellow, .purple, .black, .brown, .cyan]
     
     init() {}
     
@@ -66,32 +64,15 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                 print("Error Can't start ARKit \(error)")
             }
         }
-        let streamingURLString = "https://p-events-delivery.akamaized.net/2605bdtgclbnfypwzfkzdsupvcyzhhbx/m3u8/hls_vod_mvp.m3u8"
-        guard let url = URL(string: streamingURLString) else {
-          return
-        }
-        let asset = AVURLAsset(url: url)
-        let playerItem = AVPlayerItem(asset: asset)// Create a Material and assign it to your model entity
-        let player = AVPlayer()
-        let vidMat = [VideoMaterial(avPlayer: player)]// Tell the player to load and play
-        player.replaceCurrentItem(with: playerItem)
-        player.play()
-        
-        
         
         Task {
-            
             for await update in sceneReconstruction.anchorUpdates {
                 let meshAnchor = update.anchor
                 
                 // gen static mech from the anchor
                 guard let shape = try? await ShapeResource.generateStaticMesh(from: meshAnchor) else { continue }
                 
-               
                 switch update.event {
-                    
-                    
-                    
                     case .added:
                         // same as normal entity but it has a model component
                         let entity = ModelEntity()
@@ -99,10 +80,10 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                         // isStatic helps with resource optimization
                         entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
                         
-                    
-                        if let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
+                    if let classes = getClasses(meshAnchor: meshAnchor),
+                            let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor, classes: classes) {
                             // Occlusion material will hide any content behind our scene mesh
-                            let modelComponent = ModelComponent(mesh: meshResource, materials: vidMat)
+                        let modelComponent = ModelComponent(mesh: meshResource, materials: [UnlitMaterial(color: .red)])
                             entity.components.set(modelComponent)
                         }
                         meshEntities[meshAnchor.id] = entity
@@ -114,8 +95,9 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                         entity.transform = Transform(matrix: meshAnchor.originFromAnchorTransform)
                         entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
                         
-                        if let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
-                            let modelComponent = ModelComponent(mesh: meshResource, materials: vidMat)
+                    if let classes = getClasses(meshAnchor: meshAnchor),
+                            let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor, classes: classes) {
+                            let modelComponent = ModelComponent(mesh: meshResource, materials: [UnlitMaterial(color: .red)])
                             entity.components.set(modelComponent)
                         }
                         
@@ -133,6 +115,18 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         controllerRoot.addChild(headContainer)
         
         setupSceneFirstTime()
+    }
+    
+    private func getClasses(meshAnchor: MeshAnchor) -> [UInt8]? {
+        guard let classifications = meshAnchor.geometry.classifications,
+              classifications.format == .uchar else { return nil}
+        
+        let classbuffer = classifications.buffer.contents()
+        let classTyped = classbuffer.bindMemory(to: UInt8.self, capacity: MemoryLayout<UInt8>.stride * classifications.count)
+        
+        let classBufferPointer = UnsafeBufferPointer(start: classTyped, count: classifications.count)
+        
+        return Array(classBufferPointer)
     }
     
     private func getIndexArray(meshAnchor: MeshAnchor) -> [UInt32]? {
@@ -160,7 +154,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         return result
     }
     
-    private func getMeshResourceFromAnchor(meshAnchor: MeshAnchor) -> MeshResource? {
+    private func getMeshResourceFromAnchor(meshAnchor: MeshAnchor, classes: [UInt8]? = nil) -> MeshResource? {
         guard meshAnchor.geometry.faces.primitive == .triangle,
               meshAnchor.geometry.vertices.format == .float3,
               let indexArray = getIndexArray(meshAnchor: meshAnchor) else {
@@ -172,7 +166,26 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         
         let positions = readFloat3FromMTL(source: meshAnchor.geometry.vertices)
         
-        part.triangleIndices = MeshBuffer(indexArray)
+        // classes are used for classification/ floor detection
+        var resultIndexArray = indexArray
+        if let classes = classes {
+            resultIndexArray = []
+            for faceId in 0 ..< meshAnchor.geometry.faces.count {
+                let classId = classes[faceId]
+                // floor
+                if classId == 2 {
+                    let vert0: UInt32 = indexArray[faceId * 3]
+                    let vert1: UInt32 = indexArray[faceId * 3 + 1]
+                    let vert2: UInt32 = indexArray[faceId * 3 + 2]
+                    
+                    resultIndexArray.append(vert0)
+                    resultIndexArray.append(vert1)
+                    resultIndexArray.append(vert2)
+                }
+            }
+        }
+        
+        part.triangleIndices = MeshBuffer(resultIndexArray)
         part.positions = MeshBuffer(positions)
         
         let model = MeshResource.Model(id: "main", parts: [part])
