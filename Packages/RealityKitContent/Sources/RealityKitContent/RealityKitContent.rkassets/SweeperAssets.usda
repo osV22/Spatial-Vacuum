@@ -10,13 +10,14 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["coin", "Cylinder"]
+    reorder nameChildren = ["coin", "handlePart", "headPart", "Cube"]
     uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
     def Xform "coin" (
         active = true
     )
     {
+        reorder nameChildren = ["Transform", "Cylinder"]
         def Cylinder "Cylinder" (
             active = true
             prepend apiSchemas = ["MaterialBindingAPI"]
@@ -67,6 +68,161 @@ def Xform "Root"
                     def RealityKitStruct "pose"
                     {
                     }
+                }
+            }
+
+            def RealityKitComponent "GroundingShadow"
+            {
+                bool enableIBLShadow = 0
+                bool enableMeshShadow = 0
+                uniform token info:id = "RealityKit.GroundingShadow"
+            }
+        }
+    }
+
+    def Xform "handlePart" (
+        active = true
+    )
+    {
+        reorder nameChildren = ["offset", "connector"]
+        def Xform "offset" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-1.5707963, 0, 0)
+            }
+        )
+        {
+            quatf xformOp:orient = (0.70710677, -0.7071067, 0, 0)
+            float3 xformOp:scale = (1, 13, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def Cylinder "Cylinder" (
+                active = true
+                prepend apiSchemas = ["MaterialBindingAPI"]
+            )
+            {
+                uniform token axis = "Y"
+                double height = 0.1
+                rel material:binding = </Root/handlePart/offset/Cylinder/DefaultMaterial>
+                double radius = 0.05
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                float3 xformOp:translate = (0, 0.05, 0)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                def Material "DefaultMaterial"
+                {
+                    token outputs:mtlx:surface
+                    token outputs:realitykit:vertex
+                    prepend token outputs:surface.connect = </Root/handlePart/offset/Cylinder/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                    def Shader "DefaultSurfaceShader"
+                    {
+                        uniform token info:id = "UsdPreviewSurface"
+                        color3f inputs:diffuseColor = (0.9080254, 0.94196725, 1) (
+                            colorSpace = "srgb_displayp3"
+                        )
+                        float inputs:roughness = 0.2
+                        token outputs:surface
+                    }
+                }
+
+                def RealityKitComponent "GroundingShadow"
+                {
+                    bool enableIBLShadow = 1
+                    bool enableMeshShadow = 1
+                    uniform token info:id = "RealityKit.GroundingShadow"
+                }
+            }
+        }
+
+        def Xform "connector" (
+            active = true
+        )
+        {
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, -1.3002405)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.1, 0.100000076, 1.3)
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (0, 3.7252903e-8, -0.65)
+                }
+            }
+        }
+    }
+
+    def Xform "headPart" (
+        active = true
+    )
+    {
+        def Cube "Cube" (
+            active = true
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </Root/headPart/Cube/DefaultMaterial>
+            double size = 0.2
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (2.5, 0.3, 1)
+            float3 xformOp:translate = (0, 0, -1.3109664)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def Material "DefaultMaterial"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+                prepend token outputs:surface.connect = </Root/headPart/Cube/DefaultMaterial/DefaultSurfaceShader.outputs:surface>
+
+                def Shader "DefaultSurfaceShader"
+                {
+                    uniform token info:id = "UsdPreviewSurface"
+                    color3f inputs:diffuseColor = (0.49839708, 0.6478897, 1) (
+                        colorSpace = "srgb_displayp3"
+                    )
+                    float inputs:roughness = 0.75
+                    token outputs:surface
+                }
+            }
+
+            def RealityKitComponent "GroundingShadow"
+            {
+                bool enableIBLShadow = 1
+                bool enableMeshShadow = 1
+                uniform token info:id = "RealityKit.GroundingShadow"
+            }
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.5, 0.060000002, 0.20000005)
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (0, 0, -1.3109664)
                 }
             }
         }

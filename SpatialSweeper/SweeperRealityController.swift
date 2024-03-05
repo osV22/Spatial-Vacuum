@@ -55,6 +55,8 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     private var coins: [String: SIMD3<Float>] = [:]
     
     private var coinModel: Entity?
+    private var handlePartModel: Entity?
+    private var headPartModel: Entity?
     
     private var coinEntities: [String:Entity] = [:]
     
@@ -318,11 +320,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         {
             let transform = Transform(matrix: rightHand.originFromAnchorTransform)
             
-            let handViz = getVisualizedBox(name: "hand", color: .red, size: 0.02)
-            handViz.transform = transform
-            
-            let handDirection = getVisualizedBox(name: "handDirection", color: .yellow, size: 0.02, parent: handViz)
-            handDirection.position = .init(x: -1.0, y: 0.0, z: 0.0)
+          
         }
         
         updateCoins()

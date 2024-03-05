@@ -27,6 +27,42 @@
     "objectMetadataList" : [
       [
         "822C1E60-C394-4E4E-858E-1587F4333EB6",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "822C1E60-C394-4E4E-858E-1587F4333EB6",
+        "Root",
+        "headPart"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "822C1E60-C394-4E4E-858E-1587F4333EB6",
+        "Root",
+        "handlePart"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "822C1E60-C394-4E4E-858E-1587F4333EB6",
+        "Root",
+        "handlePart",
+        "offset"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "822C1E60-C394-4E4E-858E-1587F4333EB6",
         "Root",
         "coin"
       ],
@@ -37,16 +73,8 @@
       [
         "822C1E60-C394-4E4E-858E-1587F4333EB6",
         "Root",
-        "coin",
-        "Cylinder"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "822C1E60-C394-4E4E-858E-1587F4333EB6",
-        "Root"
+        "headPart",
+        "Cube"
       ],
       {
         "isExpanded" : true,
