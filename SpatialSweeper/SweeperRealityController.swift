@@ -40,6 +40,8 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     
     private var meshEntities = [UUID: ModelEntity]()
     
+    private var colors: [UIColor] = [.red, .blue, .green, .yellow, .purple, .black, .brown, .cyan]
+    
     init() {}
     
     public func firstInit(_ content: inout RealityViewContent, attachments: RealityViewAttachments) async {
@@ -80,7 +82,8 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                         entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
                         
                         if let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
-                            let modelComponent = ModelComponent(mesh: meshResource, materials: [UnlitMaterial(color: .yellow)])
+                            // Occlusion material will hide any content behind our scene mesh
+                            let modelComponent = ModelComponent(mesh: meshResource, materials: [OcclusionMaterial()])
                             entity.components.set(modelComponent)
                         }
                         meshEntities[meshAnchor.id] = entity
@@ -93,7 +96,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                         entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
                         
                         if let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
-                            let modelComponent = ModelComponent(mesh: meshResource, materials: [UnlitMaterial(color: .yellow)])
+                            let modelComponent = ModelComponent(mesh: meshResource, materials: [OcclusionMaterial()])
                             entity.components.set(modelComponent)
                         }
                         
