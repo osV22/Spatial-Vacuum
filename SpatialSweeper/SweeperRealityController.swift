@@ -11,6 +11,7 @@ import RealityKit
 import RealityKitContent
 import Combine
 import ARKit
+import AVFoundation
 
 @MainActor
 protocol SceneControllerProtocol {
@@ -65,15 +66,32 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                 print("Error Can't start ARKit \(error)")
             }
         }
+        let streamingURLString = "https://p-events-delivery.akamaized.net/2605bdtgclbnfypwzfkzdsupvcyzhhbx/m3u8/hls_vod_mvp.m3u8"
+        guard let url = URL(string: streamingURLString) else {
+          return
+        }
+        let asset = AVURLAsset(url: url)
+        let playerItem = AVPlayerItem(asset: asset)// Create a Material and assign it to your model entity
+        let player = AVPlayer()
+        let vidMat = [VideoMaterial(avPlayer: player)]// Tell the player to load and play
+        player.replaceCurrentItem(with: playerItem)
+        player.play()
+        
+        
         
         Task {
+            
             for await update in sceneReconstruction.anchorUpdates {
                 let meshAnchor = update.anchor
                 
                 // gen static mech from the anchor
                 guard let shape = try? await ShapeResource.generateStaticMesh(from: meshAnchor) else { continue }
                 
+               
                 switch update.event {
+                    
+                    
+                    
                     case .added:
                         // same as normal entity but it has a model component
                         let entity = ModelEntity()
@@ -81,9 +99,10 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                         // isStatic helps with resource optimization
                         entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
                         
+                    
                         if let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
                             // Occlusion material will hide any content behind our scene mesh
-                            let modelComponent = ModelComponent(mesh: meshResource, materials: [OcclusionMaterial()])
+                            let modelComponent = ModelComponent(mesh: meshResource, materials: vidMat)
                             entity.components.set(modelComponent)
                         }
                         meshEntities[meshAnchor.id] = entity
@@ -96,7 +115,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                         entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
                         
                         if let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
-                            let modelComponent = ModelComponent(mesh: meshResource, materials: [OcclusionMaterial()])
+                            let modelComponent = ModelComponent(mesh: meshResource, materials: vidMat)
                             entity.components.set(modelComponent)
                         }
                         
