@@ -57,6 +57,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     private var coinModel: Entity?
     private var handlePartModel: Entity?
     private var headPartModel: Entity?
+    private var headConnector: Entity?
     
     private var coinEntities: [String:Entity] = [:]
     
@@ -102,6 +103,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                         entity.transform = Transform(matrix: meshAnchor.originFromAnchorTransform)
                         // isStatic helps with resource optimization
                         entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
+                        entity.collision?.filter.group = .sceneUnderstanding
                         
                     if let classes = getClasses(meshAnchor: meshAnchor),
                             let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
@@ -316,11 +318,33 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         
         if handTracking.state == .running,
            let rightHand = handTracking.latestAnchors.rightHand,
-           rightHand.isTracked
+           rightHand.isTracked,
+           let scene = controllerRoot.scene,
+           let headConnector = headConnector
         {
             let transform = Transform(matrix: rightHand.originFromAnchorTransform)
             
-          
+            let vacuumDirectionPoint: SIMD4<Float> = .init(x: -1.0, y: 0.0, z: 0.0, w: 1.0)
+            
+            let globalDirectionPoint = transform.matrix * vacuumDirectionPoint
+            let globalDirectionPoint3: SIMD3<Float> = .init(x: globalDirectionPoint.x, y: globalDirectionPoint.y, z: globalDirectionPoint.z)
+            
+            handlePartModel?.position = transform.translation
+            handlePartModel?.look(at: globalDirectionPoint3, from: transform.translation, relativeTo: controllerRoot)
+            
+            let globalPositionHeadConnector = headConnector.position(relativeTo: controllerRoot)
+           
+            headPartModel?.position = headConnector.position(relativeTo: controllerRoot)
+            let direction = globalDirectionPoint3 - transform.translation
+            headPartModel?.orientation = .init(angle: atan2(direction.x, direction.z), axis: .init(x: 0.0, y: 1.0, z: 0.0))
+        
+            // So the head does not clip through the floor
+            let results = scene.raycast(from: transform.translation, to: globalPositionHeadConnector, mask: .sceneUnderstanding)
+            if results.count > 0 {
+                let offsetPosition = results[0].position - globalPositionHeadConnector
+                headPartModel?.position += offsetPosition
+                handlePartModel?.position += offsetPosition
+            }
         }
         
         updateCoins()
@@ -387,13 +411,29 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     
     func setupSceneFirstTime() async {
         
-        if let scene = try? await Entity(named: "SweeperAssets", in: realityKitContentBundle),
-           let coin = scene.findEntity(named: "coin")
-        {
-            coin.components.set(RotateComponent())
-            coinModel = coin
+        if let scene = try? await Entity(named: "SweeperAssets", in: realityKitContentBundle)
+    {
+            
+            if let coin = scene.findEntity(named: "coin") {
+                coin.components.set(RotateComponent())
+                coinModel = coin
+            }
+            
+            if let handlePart = scene.findEntity(named: "handlePart") {
+                handlePartModel = handlePart
+                controllerRoot.addChild(handlePart)
+                
+                if let connector = handlePart.findEntity(named: "connector") {
+                    headConnector = connector
+                    
+                }
+            }
+            
+            if let headPart = scene.findEntity(named: "headPart") {
+                headPartModel = headPart
+                controllerRoot.addChild(headPart)
+            }
         }
-        
     }
     
     func updateAfterInject() {

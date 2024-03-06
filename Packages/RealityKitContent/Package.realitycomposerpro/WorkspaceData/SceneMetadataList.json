@@ -11,6 +11,11 @@
       }
     ]
   },
+  "57BFDF40-43D9-429A-9C44-F32C45FD2B0D" : {
+    "objectMetadataList" : [
+
+    ]
+  },
   "65F6F990-A780-4474-B78B-572E0E4E273D" : {
     "objectMetadataList" : [
       [
@@ -36,15 +41,6 @@
       [
         "822C1E60-C394-4E4E-858E-1587F4333EB6",
         "Root",
-        "headPart"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "822C1E60-C394-4E4E-858E-1587F4333EB6",
-        "Root",
         "handlePart"
       ],
       {
@@ -56,6 +52,15 @@
         "Root",
         "handlePart",
         "offset"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "822C1E60-C394-4E4E-858E-1587F4333EB6",
+        "Root",
+        "headPart"
       ],
       {
         "isExpanded" : true,
@@ -99,7 +104,98 @@
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root",
-        "Sphere_Left"
+        "vacuum_cleaner",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
+        "vacuum_cleaner",
+        "Meshes",
+        "Sketchfab_model",
+        "_e84b3649e4447e6b387206037577ea3_fbx",
+        "RootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
+        "Low_Poly__Laser_Sight_Attachment",
+        "Materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
+        "vacuum_cleaner",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
+        "Low_Poly__Laser_Sight_Attachment",
+        "Meshes",
+        "Sketchfab_model",
+        "_9b56c0aa9a144689b46b6eb1e9d68ba_fbx"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
+        "vacuum_cleaner",
+        "Meshes",
+        "Sketchfab_model",
+        "_e84b3649e4447e6b387206037577ea3_fbx"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
+        "Low_Poly__Laser_Sight_Attachment",
+        "Meshes",
+        "Sketchfab_model",
+        "_9b56c0aa9a144689b46b6eb1e9d68ba_fbx",
+        "RootNode"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
+        "Low_Poly__Laser_Sight_Attachment",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "AF09ED6F-1707-48FD-8720-65B998362C09",
+        "Root",
+        "vacuum_cleaner"
       ],
       {
         "isExpanded" : true,
@@ -116,7 +212,9 @@
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root",
-        "Sphere_Right"
+        "Low_Poly__Laser_Sight_Attachment",
+        "Meshes",
+        "Sketchfab_model"
       ],
       {
         "isExpanded" : true,
@@ -138,6 +236,120 @@
         "CB766F92-EE55-4A63-9401-E7B8C009764D",
         "Root",
         "GridMaterial"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      }
+    ]
+  },
+  "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1" : {
+    "objectMetadataList" : [
+      [
+        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
+        "Root",
+        "Mario_coin",
+        "Meshes"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
+        "Root",
+        "Transform",
+        "Mario_coin",
+        "Materials"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
+        "Root",
+        "Mario_coin",
+        "Meshes",
+        "Sketchfab_model",
+        "_369504cd45e4af1bfaf87b8360a537c_obj_cleaner_materialmerger_gles",
+        "Object_2"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
+        "Root",
+        "Mario_coin",
+        "Meshes",
+        "Sketchfab_model",
+        "_369504cd45e4af1bfaf87b8360a537c_obj_cleaner_materialmerger_gles",
+        "Object_3"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
+        "Root",
+        "Mario_coin",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
+        "Root",
+        "Mario_coin"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
+        "Root",
+        "Transform",
+        "Mario_coin",
+        "Meshes",
+        "Sketchfab_model"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
+        "Root",
+        "Mario_coin",
+        "Meshes",
+        "Sketchfab_model",
+        "_369504cd45e4af1bfaf87b8360a537c_obj_cleaner_materialmerger_gles"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
+        "Root"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
+        "Root",
+        "Transform",
+        "Mario_coin",
+        "Meshes"
       ],
       {
         "isExpanded" : true,

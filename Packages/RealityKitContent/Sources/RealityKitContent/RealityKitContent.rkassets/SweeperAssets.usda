@@ -70,13 +70,6 @@ def Xform "Root"
                     }
                 }
             }
-
-            def RealityKitComponent "GroundingShadow"
-            {
-                bool enableIBLShadow = 0
-                bool enableMeshShadow = 0
-                uniform token info:id = "RealityKit.GroundingShadow"
-            }
         }
     }
 
@@ -143,7 +136,7 @@ def Xform "Root"
         {
             quatf xformOp:orient = (1, 0, 0, 0)
             float3 xformOp:scale = (1, 1, 1)
-            float3 xformOp:translate = (0, 0, -1.3002405)
+            float3 xformOp:translate = (0, 0, -1.3393232)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
         }
 
@@ -180,7 +173,7 @@ def Xform "Root"
             double size = 0.2
             quatf xformOp:orient = (1, 0, 0, 0)
             float3 xformOp:scale = (2.5, 0.3, 1)
-            float3 xformOp:translate = (0, 0, -1.3109664)
+            float3 xformOp:translate = (0, 0, 0)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
             def Material "DefaultMaterial"
@@ -217,12 +210,10 @@ def Xform "Root"
 
             def RealityKitStruct "Shape"
             {
-                float3 extent = (0.5, 0.060000002, 0.20000005)
                 token shapeType = "Box"
 
                 def RealityKitStruct "pose"
                 {
-                    float3 position = (0, 0, -1.3109664)
                 }
             }
         }
