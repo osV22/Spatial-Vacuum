@@ -11,6 +11,7 @@ import RealityKit
 import RealityKitContent
 import Combine
 import ARKit
+import AVFoundation
 
 @MainActor
 protocol SceneControllerProtocol {
@@ -25,6 +26,7 @@ protocol SceneControllerProtocol {
 final class SweeperRealityController: ObservableObject, SceneControllerProtocol {
     
     @Published var score: Int = 0
+    var coinSound: AudioResource?
     
     struct CoinPlacement {
         var position: SIMD3<Float>
@@ -161,10 +163,27 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         await setupSceneFirstTime()
     }
     
+
+    private func playSound(for entity: Entity) {
+        guard let audioFileURL = Bundle.main.url(forResource: "coin_collect", withExtension: "mp3") else {
+            print("Audio file not found")
+            return
+        }
+        
+        do {
+            // may add volume control later
+            let audioResource = try AudioFileResource.load(contentsOf: audioFileURL, withName: "coinSound")
+//            let audioPlaybackController = entity.playAudio(audioResource)
+        } catch {
+            print("Failed to load audio file: \(error)")
+        }
+    }
+    
     private func onCollisionBegan(event: CollisionEvents.Began) {
         if event.entityA.name == "coin" {
             event.entityA.components[RotateComponent.self]?.isCollecting = true
             // play sound
+            playSound(for: event.entityA)
             
             score += 1
         }
