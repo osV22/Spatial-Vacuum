@@ -24,6 +24,8 @@ protocol SceneControllerProtocol {
 @MainActor
 final class SweeperRealityController: ObservableObject, SceneControllerProtocol {
     
+    @Published var score: Int = 0
+    
     struct CoinPlacement {
         var position: SIMD3<Float>
     }
@@ -58,6 +60,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     private var handlePartModel: Entity?
     private var headPartModel: Entity?
     private var headConnector: Entity?
+    private var scoreEntity: Entity?
     
     private var coinEntities: [String:Entity] = [:]
     
@@ -79,6 +82,11 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
             }
         
         content.add(controllerRoot)
+        
+        if let scoreAttachment = attachments.entity(for: "score") {
+            scoreEntity = scoreAttachment
+            controllerRoot.addChild(scoreAttachment)
+        }
         
         _ = content.subscribe(to: SceneEvents.Update.self, on: nil) { event in
             self.updateFrame(event)
@@ -157,7 +165,8 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         if event.entityA.name == "coin" {
             event.entityA.components[RotateComponent.self]?.isCollecting = true
             // play sound
-            // increment score
+            
+            score += 1
         }
     }
     
@@ -362,6 +371,12 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
             }
         }
         
+        if let headPartModel = headPartModel,
+           let headContainer = controllerRoot.findEntity(named: "headContainer") {
+            scoreEntity?.look(at: headPartModel.position, from: headContainer.position, relativeTo: controllerRoot)
+            scoreEntity?.position = headPartModel.position + .init(x: 0.0, y: 0.3, z: 0.0)
+        }
+        
         updateCoins()
     }
     
@@ -383,6 +398,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     
     public func updateView(_ content: inout RealityViewContent, attachments: RealityViewAttachments) {
         print("ssc::updateview")
+        scoreEntity = attachments.entity(for: "score")
     }
     
     func cleanup() {

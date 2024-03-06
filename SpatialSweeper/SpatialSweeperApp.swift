@@ -15,7 +15,7 @@ struct SpatialSweeperApp: App {
         }
 
         ImmersiveSpace(id: "ImmersiveSpace") {
-            ImmersiveView<SweeperRealityController>()
+            ImmersiveView()
         }
     }
 }

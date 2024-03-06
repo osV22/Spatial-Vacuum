@@ -21,7 +21,7 @@ class RotateSystem: System {
         
         for result in results {
             if var component = result.components[RotateComponent.self] {
-                var speedMultiplier: Float = component.isCollecting ? 10.0 : 1.0
+                let speedMultiplier: Float = component.isCollecting ? 10.0 : 1.0
                 
                 result.orientation = result.orientation * simd_quatf(angle: speedMultiplier * Float(context.deltaTime), axis: .init(x: 0.0, y: 1.0, z: 0.0))
                 
