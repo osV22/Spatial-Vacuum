@@ -9,4 +9,9 @@ import Foundation
 import RealityKit
 
 struct RotateComponent: Component {
+    var isCollecting: Bool = false
+    var animationProgress: Float  = 0.0
+    
+    var startPositionY: Float?
+    var endPositionY: Float?
 }

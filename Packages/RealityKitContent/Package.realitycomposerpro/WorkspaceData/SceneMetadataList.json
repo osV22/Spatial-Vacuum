@@ -306,15 +306,6 @@
       [
         "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
         "Root",
-        "Mario_coin"
-      ],
-      {
-        "isExpanded" : true,
-        "isLocked" : false
-      },
-      [
-        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
-        "Root",
         "Transform",
         "Mario_coin",
         "Meshes",
@@ -331,6 +322,15 @@
         "Meshes",
         "Sketchfab_model",
         "_369504cd45e4af1bfaf87b8360a537c_obj_cleaner_materialmerger_gles"
+      ],
+      {
+        "isExpanded" : true,
+        "isLocked" : false
+      },
+      [
+        "D6DDCE2C-7CE2-4E4A-B965-C344AAC70DD1",
+        "Root",
+        "gold_coin"
       ],
       {
         "isExpanded" : true,

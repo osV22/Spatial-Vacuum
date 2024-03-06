@@ -61,6 +61,9 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     
     private var coinEntities: [String:Entity] = [:]
     
+    private var coinCollisionGroup = CollisionGroup(rawValue: 1 << 0)
+    private var vacuumCollisionGroup = CollisionGroup(rawValue: 1 << 1)
+    
     init() {}
     
     public func firstInit(_ content: inout RealityViewContent, attachments: RealityViewAttachments) async {
@@ -80,6 +83,8 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         _ = content.subscribe(to: SceneEvents.Update.self, on: nil) { event in
             self.updateFrame(event)
         }
+        
+        _ = content.subscribe(to: CollisionEvents.Began.self, on: nil, self.onCollisionBegan)
         
         Task {
             do {
@@ -121,6 +126,8 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                         
                         entity.transform = Transform(matrix: meshAnchor.originFromAnchorTransform)
                         entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
+                        entity.collision?.filter.group = .sceneUnderstanding
+
                         
                     if let classes = getClasses(meshAnchor: meshAnchor),
                             let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
@@ -144,6 +151,14 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         controllerRoot.addChild(headContainer)
         
         await setupSceneFirstTime()
+    }
+    
+    private func onCollisionBegan(event: CollisionEvents.Began) {
+        if event.entityA.name == "coin" {
+            event.entityA.components[RotateComponent.self]?.isCollecting = true
+            // play sound
+            // increment score
+        }
     }
     
     private func updateCoinGrid(meshAnchor: MeshAnchor, classes: [UInt8]) {
@@ -376,13 +391,8 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         mainScene = nil
     }
     
-    public func onTapSpatial(_ targetValue: EntityTargetValue<SpatialTapGesture>) {
-    }
-    
-    
     public func onTapSpatial(_ targetValue: EntityTargetValue<SpatialTapGesture.Value>) {
     }
-    
     
     private var frameCounter: Int = 0
     
@@ -411,15 +421,22 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     
     func setupSceneFirstTime() async {
         
-        if let scene = try? await Entity(named: "SweeperAssets", in: realityKitContentBundle)
-    {
+        if let scene = try? await Entity(named: "SweeperAssets", in: realityKitContentBundle) {
             
             if let coin = scene.findEntity(named: "coin") {
                 coin.components.set(RotateComponent())
+                // will collide with...
+                coin.components[CollisionComponent.self]?.filter.mask = vacuumCollisionGroup
+                // represent target group...
+                coin.components[CollisionComponent.self]?.filter.group = coinCollisionGroup
+                
                 coinModel = coin
             }
             
             if let handlePart = scene.findEntity(named: "handlePart") {
+                handlePart.components[CollisionComponent.self]?.filter.mask = coinCollisionGroup
+                handlePart.components[CollisionComponent.self]?.filter.group = vacuumCollisionGroup
+                
                 handlePartModel = handlePart
                 controllerRoot.addChild(handlePart)
                 
@@ -430,6 +447,9 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
             }
             
             if let headPart = scene.findEntity(named: "headPart") {
+                headPart.components[CollisionComponent.self]?.filter.mask = coinCollisionGroup
+                headPart.components[CollisionComponent.self]?.filter.group = vacuumCollisionGroup
+                
                 headPartModel = headPart
                 controllerRoot.addChild(headPart)
             }
