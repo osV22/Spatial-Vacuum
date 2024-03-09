@@ -9,13 +9,15 @@ import SwiftUI
 
 @main
 struct SpatialSweeperApp: App {
+    @StateObject private var viewModel = AppViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(viewModel: viewModel)
         }
 
         ImmersiveSpace(id: "ImmersiveSpace") {
-            ImmersiveView()
+            ImmersiveView(viewModel: viewModel)
         }
     }
 }

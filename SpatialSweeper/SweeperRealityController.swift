@@ -15,7 +15,7 @@ import AVFoundation
 
 @MainActor
 protocol SceneControllerProtocol {
-    func firstInit(_ content : inout RealityViewContent, attachments: RealityViewAttachments) async
+    func firstInit(_ content : inout RealityViewContent, attachments: RealityViewAttachments, vacuumType: VacuumType) async
     func updateView(_ content : inout RealityViewContent, attachments: RealityViewAttachments)
     func cleanup()
     func onTapSpatial(_ targetValue: EntityTargetValue<SpatialTapGesture.Value>)
@@ -24,8 +24,9 @@ protocol SceneControllerProtocol {
 
 @MainActor
 final class SweeperRealityController: ObservableObject, SceneControllerProtocol {
-    
+        
     @Published var score: Int = 0
+    
     var coinSound: AudioResource?
     
     struct CoinPlacement {
@@ -38,7 +39,6 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     }
     
     
-    private var cancellable: AnyCancellable?;
     
     private lazy var controllerRoot: Entity = {
         var result = Entity()
@@ -71,17 +71,12 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     
     init() {}
     
-    public func firstInit(_ content: inout RealityViewContent, attachments: RealityViewAttachments) async {
+    public func firstInit(_ content: inout RealityViewContent, attachments: RealityViewAttachments, vacuumType: VacuumType) async {
 
         RotateSystem.registerSystem()
         RotateComponent.registerComponent()
         
-        cancellable = NotificationCenter.default.publisher(for: Notification.Name("INJECTION_BUNDLE_NOTIFICATION"))
-            .sink { _ in
-                Task { @MainActor in
-                    self.updateAfterInject()
-                }
-            }
+    
         
         content.add(controllerRoot)
         
@@ -91,10 +86,12 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         }
         
         _ = content.subscribe(to: SceneEvents.Update.self, on: nil) { event in
-            self.updateFrame(event)
+            self.updateFrame(event, vacuumType: vacuumType)
         }
         
         _ = content.subscribe(to: CollisionEvents.Began.self, on: nil, self.onCollisionBegan)
+        
+        preloadAudioResource()
         
         Task {
             do {
@@ -160,29 +157,39 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         headContainer.name = "headContainer"
         controllerRoot.addChild(headContainer)
         
-        await setupSceneFirstTime()
+        await setupSceneFirstTime(vacuumType: vacuumType)
     }
     
-
-    private func playSound(for entity: Entity) {
+    func preloadAudioResource() {
         guard let audioFileURL = Bundle.main.url(forResource: "coin_collect", withExtension: "mp3") else {
             print("Audio file not found")
             return
         }
-        
+
         do {
-            // may add volume control later
-            let audioResource = try AudioFileResource.load(contentsOf: audioFileURL, withName: "coinSound")
-//            let audioPlaybackController = entity.playAudio(audioResource)
+            coinSound = try AudioFileResource.load(contentsOf: audioFileURL, withName: "coinSound")
         } catch {
             print("Failed to load audio file: \(error)")
         }
     }
+
+   
+    private func playSound(for entity: Entity) {
+        guard let audioResource = coinSound else {
+            print("Audio resource not preloaded")
+            return
+        }
+
+        entity.playAudio(audioResource)
+        // TODO: Will add playback controller (volume, etc)
+    }
+
     
     private func onCollisionBegan(event: CollisionEvents.Began) {
         if event.entityA.name == "coin" {
             event.entityA.components[RotateComponent.self]?.isCollecting = true
             // play sound
+            
             playSound(for: event.entityA)
             
             score += 1
@@ -350,12 +357,37 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     }
     
     // triggered on EVERY FRAME
-    public func updateFrame(_ event: SceneEvents.Update) {
+    public func updateFrame(_ event: SceneEvents.Update, vacuumType: VacuumType) {
         if worldTracking.state == .running {
             // AVP position
             if let headPosition = worldTracking.queryDeviceAnchor(atTimestamp: CACurrentMediaTime()),
                let headContainer = controllerRoot.findEntity(named: "headContainer") {
                 headContainer.transform = Transform(matrix: headPosition.originFromAnchorTransform)
+            }
+            
+            
+            // TODO: may break these into separate methods later
+            if vacuumType == .virtual {
+                // score entity will be bind to the head of the vacuum
+                if let headPartModel = headPartModel,
+                   let headContainer = controllerRoot.findEntity(named: "headContainer") {
+                    scoreEntity?.look(at: headPartModel.position, from: headContainer.position, relativeTo: controllerRoot)
+                    scoreEntity?.position = headPartModel.position + .init(x: 0.0, y: 0.3, z: 0.0)
+                }
+            } else {
+                // score entity will be bind to the AVP pos
+                // IRL vacuum handles that mask a portion of your hand makes tracking the hand erratic
+                // hence, binding the score to the AVP instead of our hidden vacuum head
+                if let headContainer = controllerRoot.findEntity(named: "headContainer") {
+                    let offsetPosition = SIMD3<Float>(0.0, 0.16, -1.0)
+                    
+                    let newPosition = headContainer.position + (headContainer.orientation.act(offsetPosition))
+                    scoreEntity?.position = newPosition
+                    scoreEntity?.orientation = headContainer.orientation
+                    
+                    let lookAtPoint = headContainer.position + (headContainer.orientation.act(offsetPosition))
+                    scoreEntity?.look(at: lookAtPoint, from: newPosition, relativeTo: nil) // nil for world-relative positioning
+                }
             }
         }
         
@@ -390,11 +422,18 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
             }
         }
         
-        if let headPartModel = headPartModel,
-           let headContainer = controllerRoot.findEntity(named: "headContainer") {
-            scoreEntity?.look(at: headPartModel.position, from: headContainer.position, relativeTo: controllerRoot)
-            scoreEntity?.position = headPartModel.position + .init(x: 0.0, y: 0.3, z: 0.0)
-        }
+//        var isVirtual: Bool = false
+//        
+//        if isVirtual {
+//            // old method attached to object
+//            if let headPartModel = headPartModel,
+//               let headContainer = controllerRoot.findEntity(named: "headContainer") {
+//                scoreEntity?.look(at: headPartModel.position, from: headContainer.position, relativeTo: controllerRoot)
+//                scoreEntity?.position = headPartModel.position + .init(x: 0.0, y: 0.3, z: 0.0)
+//            }
+//        } else {
+//            // head tracking moved here
+//        }
         
         updateCoins()
     }
@@ -421,8 +460,6 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     }
     
     func cleanup() {
-        cancellable?.cancel()
-        cancellable = nil
         mainScene = nil
     }
     
@@ -454,20 +491,40 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         
     }
     
-    func setupSceneFirstTime() async {
+    private func useVirtualVacuum() async {
+        print("Loaded virtual vacuum assets")
         
-        if let scene = try? await Entity(named: "SweeperAssets", in: realityKitContentBundle) {
-            
-            if let coin = scene.findEntity(named: "coin") {
-                coin.components.set(RotateComponent())
-                // will collide with...
-                coin.components[CollisionComponent.self]?.filter.mask = vacuumCollisionGroup
-                // represent target group...
-                coin.components[CollisionComponent.self]?.filter.group = coinCollisionGroup
-                
-                coinModel = coin
+        if let scene = try? await Entity(named: "VirtualVacuumAssets", in: realityKitContentBundle) {
+
+            if let handlePart = scene.findEntity(named: "handlePart") {
+                handlePart.components[CollisionComponent.self]?.filter.mask = coinCollisionGroup
+                handlePart.components[CollisionComponent.self]?.filter.group = vacuumCollisionGroup
+
+                handlePartModel = handlePart
+                controllerRoot.addChild(handlePart)
+
+                if let connector = handlePart.findEntity(named: "connector") {
+                    headConnector = connector
+
+                }
             }
-            
+
+            if let headPart = scene.findEntity(named: "headPart") {
+                headPart.components[CollisionComponent.self]?.filter.mask = coinCollisionGroup
+                headPart.components[CollisionComponent.self]?.filter.group = vacuumCollisionGroup
+
+                headPartModel = headPart
+                controllerRoot.addChild(headPart)
+            }
+        }
+    }
+    
+    
+    private func useRealVacuum() async {
+        print("Loaded real vacuum assets")
+        
+        if let scene = try? await Entity(named: "RealVacuumAssets", in: realityKitContentBundle) {
+
             if let handlePart = scene.findEntity(named: "handlePart") {
                 handlePart.components[CollisionComponent.self]?.filter.mask = coinCollisionGroup
                 handlePart.components[CollisionComponent.self]?.filter.group = vacuumCollisionGroup
@@ -477,10 +534,9 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                 
                 if let connector = handlePart.findEntity(named: "connector") {
                     headConnector = connector
-                    
                 }
             }
-            
+
             if let headPart = scene.findEntity(named: "headPart") {
                 headPart.components[CollisionComponent.self]?.filter.mask = coinCollisionGroup
                 headPart.components[CollisionComponent.self]?.filter.group = vacuumCollisionGroup
@@ -491,8 +547,28 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         }
     }
     
-    func updateAfterInject() {
+    func setupSceneFirstTime(vacuumType: VacuumType) async {
+        
+        print("Virtual Vacuum toggle: \(vacuumType)")
+        
+        if let scene = try? await Entity(named: "SharedAssets", in: realityKitContentBundle) {
+            if let coin = scene.findEntity(named: "coin") {
+                coin.components.set(RotateComponent())
+                // will collide with...
+                coin.components[CollisionComponent.self]?.filter.mask = vacuumCollisionGroup
+                // represent target group...
+                coin.components[CollisionComponent.self]?.filter.group = coinCollisionGroup
+                
+                coinModel = coin
+            }
+        }
+        
+        // different assets and mesh collision
+        await vacuumType == .virtual ? useVirtualVacuum() : useRealVacuum()
+        
+        
     }
+
     
 }
 

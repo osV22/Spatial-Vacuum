@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE211F282B9A80CB00F0E4FF /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE211F272B9A80CB00F0E4FF /* HomeView.swift */; };
+		EE211F2A2B9A85A000F0E4FF /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE211F292B9A85A000F0E4FF /* AboutView.swift */; };
+		EE211F2D2B9AD36000F0E4FF /* VacuumTypeSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE211F2C2B9AD36000F0E4FF /* VacuumTypeSelection.swift */; };
+		EE211F2F2B9AD3A500F0E4FF /* CenteredTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE211F2E2B9AD3A500F0E4FF /* CenteredTitle.swift */; };
+		EE211F312B9AD3D000F0E4FF /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE211F302B9AD3D000F0E4FF /* PlayButton.swift */; };
+		EE211F332B9AD3E900F0E4FF /* AboutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE211F322B9AD3E900F0E4FF /* AboutButton.swift */; };
+		EEAF2BA12B99306D00894313 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF2BA02B99306D00894313 /* AppViewModel.swift */; };
 		EEC11E6F2B96FCC700BEB6BE /* RotateComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC11E6E2B96FCC700BEB6BE /* RotateComponent.swift */; };
 		EEC11E712B96FCEF00BEB6BE /* RotateSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC11E702B96FCEF00BEB6BE /* RotateSystem.swift */; };
 		EEC11E732B980C2300BEB6BE /* coin_collect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EEC11E722B980C2300BEB6BE /* coin_collect.mp3 */; };
@@ -20,6 +27,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EE211F272B9A80CB00F0E4FF /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		EE211F292B9A85A000F0E4FF /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		EE211F2C2B9AD36000F0E4FF /* VacuumTypeSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VacuumTypeSelection.swift; sourceTree = "<group>"; };
+		EE211F2E2B9AD3A500F0E4FF /* CenteredTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredTitle.swift; sourceTree = "<group>"; };
+		EE211F302B9AD3D000F0E4FF /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
+		EE211F322B9AD3E900F0E4FF /* AboutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutButton.swift; sourceTree = "<group>"; };
+		EEAF2BA02B99306D00894313 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		EEC11E6E2B96FCC700BEB6BE /* RotateComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateComponent.swift; sourceTree = "<group>"; };
 		EEC11E702B96FCEF00BEB6BE /* RotateSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateSystem.swift; sourceTree = "<group>"; };
 		EEC11E722B980C2300BEB6BE /* coin_collect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = coin_collect.mp3; sourceTree = "<group>"; };
@@ -46,6 +60,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EE211F262B9A80B700F0E4FF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EE211F272B9A80CB00F0E4FF /* HomeView.swift */,
+				EE211F292B9A85A000F0E4FF /* AboutView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EE211F2B2B9AD30800F0E4FF /* View Components */ = {
+			isa = PBXGroup;
+			children = (
+				EE211F2C2B9AD36000F0E4FF /* VacuumTypeSelection.swift */,
+				EE211F2E2B9AD3A500F0E4FF /* CenteredTitle.swift */,
+				EE211F302B9AD3D000F0E4FF /* PlayButton.swift */,
+				EE211F322B9AD3E900F0E4FF /* AboutButton.swift */,
+			);
+			path = "View Components";
+			sourceTree = "<group>";
+		};
 		EEC8E23B2B968EC800F4AD4D = {
 			isa = PBXGroup;
 			children = (
@@ -66,12 +100,15 @@
 		EEC8E2462B968EC800F4AD4D /* SpatialSweeper */ = {
 			isa = PBXGroup;
 			children = (
+				EE211F2B2B9AD30800F0E4FF /* View Components */,
+				EE211F262B9A80B700F0E4FF /* Views */,
 				EEC8E24B2B968EC800F4AD4D /* SpatialSweeperApp.swift */,
 				EEC8E24D2B968EC800F4AD4D /* ContentView.swift */,
 				EEC8E24F2B968EC800F4AD4D /* ImmersiveView.swift */,
 				EEC8E2622B969E5100F4AD4D /* SweeperRealityController.swift */,
 				EEC11E6E2B96FCC700BEB6BE /* RotateComponent.swift */,
 				EEC11E702B96FCEF00BEB6BE /* RotateSystem.swift */,
+				EEAF2BA02B99306D00894313 /* AppViewModel.swift */,
 				EEC11E722B980C2300BEB6BE /* coin_collect.mp3 */,
 				EEC8E2512B968ECA00F4AD4D /* Assets.xcassets */,
 				EEC8E2562B968ECA00F4AD4D /* Info.plist */,
@@ -174,9 +211,16 @@
 			files = (
 				EEC8E24E2B968EC800F4AD4D /* ContentView.swift in Sources */,
 				EEC11E712B96FCEF00BEB6BE /* RotateSystem.swift in Sources */,
+				EEAF2BA12B99306D00894313 /* AppViewModel.swift in Sources */,
+				EE211F2D2B9AD36000F0E4FF /* VacuumTypeSelection.swift in Sources */,
+				EE211F332B9AD3E900F0E4FF /* AboutButton.swift in Sources */,
 				EEC8E24C2B968EC800F4AD4D /* SpatialSweeperApp.swift in Sources */,
+				EE211F312B9AD3D000F0E4FF /* PlayButton.swift in Sources */,
+				EE211F2A2B9A85A000F0E4FF /* AboutView.swift in Sources */,
 				EEC8E2632B969E5100F4AD4D /* SweeperRealityController.swift in Sources */,
+				EE211F282B9A80CB00F0E4FF /* HomeView.swift in Sources */,
 				EEC8E2502B968EC800F4AD4D /* ImmersiveView.swift in Sources */,
+				EE211F2F2B9AD3A500F0E4FF /* CenteredTitle.swift in Sources */,
 				EEC11E6F2B96FCC700BEB6BE /* RotateComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -315,6 +359,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Vision Vacuum";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -342,6 +387,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Vision Vacuum";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

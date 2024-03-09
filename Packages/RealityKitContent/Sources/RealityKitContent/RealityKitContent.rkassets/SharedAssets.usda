@@ -1,0 +1,105 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 1.0 (409.60.6)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["coin", "SparkMaterial"]
+    def "coin" (
+        active = true
+        references = @RawCoin.usdz@
+    )
+    {
+        quatf xformOp:orient = (0.99999994, 0, 0, 0)
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        over "Meshes"
+        {
+            over "Sketchfab_model"
+            {
+                over "_369504cd45e4af1bfaf87b8360a537c_obj_cleaner_materialmerger_gles"
+                {
+                    over "Object_3" (
+                        active = false
+                    )
+                    {
+                        over "Object_1" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                        }
+                    }
+
+                    over "Object_2"
+                    {
+                        over "Object_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                            customData = {
+                                float3 rotationEulerHint = (-2.7314332, -0.03366086, 3.409656)
+                            }
+                        )
+                        {
+                            rel material:binding = </Root/coin/Materials/TT_checker_2048x2048_UV_GRID> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                            quatf xformOp:orient = (0.010880239, -0.13420857, 0.96966845, -0.20399198)
+                            float3 xformOp:scale = (1, 0.9999998, 0.9999998)
+                            float3 xformOp:translate = (1.1920929e-7, 1.4901161e-8, 1.6440594)
+                            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                        }
+                    }
+                }
+            }
+        }
+
+        over "Materials"
+        {
+            over "Material"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+            }
+
+            over "TT_checker_2048x2048_UV_GRID"
+            {
+                token outputs:mtlx:surface
+                token outputs:realitykit:vertex
+
+                over "pbr_shader"
+                {
+                    color3f inputs:emissiveColor = (0, 0, 0)
+                    color3f inputs:emissiveColor.connect = </Root/coin/Materials/TT_checker_2048x2048_UV_GRID/tex_emissive.outputs:rgb>
+                }
+            }
+        }
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (7, 7, 2)
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (4.7683716e-7, 8.220296, 4.7683716e-7)
+                }
+            }
+        }
+    }
+}
+

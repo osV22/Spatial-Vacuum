@@ -212,5 +212,14 @@ def Xform "Root"
             int ui:nodegraph:node:stackingOrder = 1363
         }
     }
+
+    def "VirtualVacuumAssets" (
+        active = true
+        prepend references = @../VirtualVacuumAssets.usdz@
+    )
+    {
+        float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (-0.0058289235, 0, 0.010604411)
+    }
 }
 
