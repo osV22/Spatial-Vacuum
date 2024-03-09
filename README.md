@@ -1,7 +1,13 @@
 # Spatial Sweeper / Vision Vacuum
 Collect coins while cleaning ya room...
 
+[![appstore-badge](https://github.com/osV22/SpatialSweeper/assets/30060025/7127b77c-e947-4838-b91f-089d60b48c28)]()
+
+
 Note: Entire project is under Spatial Sweeper because I was not thinking of releasing the app.
+
+https://github.com/osV22/SpatialSweeper/assets/30060025/47a6a1ae-11d8-41f5-a6a2-ce9a6ebb6384
+
 
 ## Maintenance Notes
 - Some real vacuum handles may cause erratic behavior with the hand tracking if a portion of your hand is obscured by the handle.
