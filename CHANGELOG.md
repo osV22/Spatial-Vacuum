@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - About now includes small excerpt about privacy policy
 - Real vacuum score entity slightly lowered
+- Update README
 
 ## 1.0.0-build.2 - 2024-03-09
 ### Added
