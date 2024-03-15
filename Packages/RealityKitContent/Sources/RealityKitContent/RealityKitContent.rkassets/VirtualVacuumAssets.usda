@@ -1,0 +1,636 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "Reality Composer Pro Version 1.0 (409.60.6)"
+    }
+    defaultPrim = "Root"
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Xform "Root"
+{
+    reorder nameChildren = ["_materials", "handlePart", "headPart"]
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+    def Xform "handlePart" (
+        active = true
+    )
+    {
+        reorder nameChildren = ["offset", "offset_bak", "connector", "Collider"]
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.1, 0.100000076, 1.3)
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (0, 3.7252903e-8, -0.65)
+                }
+            }
+        }
+
+        def Xform "offset" (
+            active = true
+        )
+        {
+            reorder nameChildren = ["handleCustom", "connector"]
+            quatf xformOp:orient = (1, 0, 0, 0)
+            float3 xformOp:scale = (1, 1, 1)
+            float3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            def "handleCustom" (
+                active = true
+                customData = {
+                    float3 rotationEulerHint = (2.0053318, -0.059633523, -0.19590728)
+                }
+                references = @handleCustom.usdc@
+            )
+            {
+                quatf xformOp:orient = (0.5376975, 0.83692616, -0.09836118, -0.027588421)
+                float3 xformOp:scale = (0.18, 0.18, 0.18)
+                float3 xformOp:translate = (-0.0020000488, 0.012000086, -0.8065602)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+                over "polySurface415" (
+                    active = false
+                )
+                {
+                }
+
+                over "polySurface416" (
+                    active = false
+                )
+                {
+                }
+
+                over "polySurface417" (
+                    active = false
+                )
+                {
+                }
+
+                over "polySurface418" (
+                    active = false
+                )
+                {
+                }
+
+                over "polySurface419" (
+                    active = false
+                )
+                {
+                }
+
+                over "polySurface420" (
+                    active = false
+                )
+                {
+                }
+
+                over "polySurface421" (
+                    active = false
+                )
+                {
+                }
+
+                over "polySurface422" (
+                    active = false
+                )
+                {
+                }
+
+                over "polySurface423" (
+                    active = false
+                )
+                {
+                }
+
+                over "polySurface434" (
+                    active = false
+                )
+                {
+                }
+
+                over "polySurface437" (
+                    active = false
+                )
+                {
+                }
+
+                over "polySurface424"
+                {
+                    over "polySurface424_lambert2_0"
+                    {
+                        over "polySurface424_lambert2_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert2> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+
+                over "polySurface425"
+                {
+                    over "polySurface425_lambert2_0" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = None (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+
+                        over "polySurface425_lambert2_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert2> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+
+                over "polySurface426"
+                {
+                    over "polySurface426_lambert2_0" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = None (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+
+                        over "polySurface426_lambert2_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert2> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+
+                over "polySurface427"
+                {
+                    over "polySurface427_lambert2_0"
+                    {
+                        over "polySurface427_lambert2_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert2> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+
+                over "polySurface428"
+                {
+                    over "polySurface428_lambert2_0"
+                    {
+                        over "polySurface428_lambert2_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert2> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+
+                over "polySurface429"
+                {
+                    over "polySurface429_lambert2_0"
+                    {
+                        over "polySurface429_lambert2_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert2> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+
+                over "polySurface430"
+                {
+                    over "polySurface430_lambert2_0"
+                    {
+                        over "polySurface430_lambert2_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert2> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+
+                over "polySurface431"
+                {
+                    over "polySurface431_lambert1_0"
+                    {
+                        over "polySurface431_lambert1_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert1> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+
+                over "polySurface432"
+                {
+                    over "polySurface432_lambert2_0"
+                    {
+                        over "polySurface432_lambert2_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert2> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+
+                over "polySurface433"
+                {
+                    over "polySurface433_phong2_0"
+                    {
+                        over "polySurface433_phong2_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert2> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+
+                over "polySurface435"
+                {
+                    over "polySurface435_lambert2_0"
+                    {
+                        over "polySurface435_lambert2_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert2> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+
+                over "polySurface436"
+                {
+                    over "polySurface436_lambert1_0"
+                    {
+                        over "polySurface436_lambert1_0" (
+                            prepend apiSchemas = ["MaterialBindingAPI"]
+                        )
+                        {
+                            rel material:binding = </Root/_materials/lambert1> (
+                                bindMaterialAs = "weakerThanDescendants"
+                            )
+                        }
+                    }
+                }
+            }
+
+            def Xform "connector" (
+                active = true
+            )
+            {
+                quatf xformOp:orient = (1, 0, 0, 0)
+                float3 xformOp:scale = (1, 1, 1)
+                float3 xformOp:translate = (0, 0, -1.3393232)
+                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+            }
+        }
+    }
+
+    def Xform "headPart" (
+        active = true
+    )
+    {
+        reorder nameChildren = ["headCustom", "head2", "Cube", "Collider"]
+        float3 xformOp:translate = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+        def RealityKitComponent "Collider"
+        {
+            uint group = 1
+            uniform token info:id = "RealityKit.Collider"
+            uint mask = 4294967295
+            token type = "Default"
+
+            def RealityKitStruct "Shape"
+            {
+                float3 extent = (0.54078674, 0.07, 0.22)
+                token shapeType = "Box"
+
+                def RealityKitStruct "pose"
+                {
+                    float3 position = (-0.009983256, 0.026049614, 0.043055587)
+                }
+            }
+        }
+
+        def "headCustom" (
+            active = true
+            customData = {
+                float3 rotationEulerHint = (-0.049520437, 0.14240824, -0.0070339586)
+            }
+            references = @headCustom.usdc@
+        )
+        {
+            quatf xformOp:orient = (0.9971603, -0.02444479, 0.07120892, -0.0017456441)
+            float3 xformOp:scale = (0.19999997, 0.19999999, 0.19999996)
+            float3 xformOp:translate = (0.01534754, -0.021131366, 0.03256327)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+
+            over "polySurface430" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface426" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface424" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface425" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface422" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface423" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface415" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface427" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface429" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface428" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface432" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface431" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface434" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface433" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface436" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface435" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface437" (
+                active = false
+            )
+            {
+            }
+
+            over "polySurface421"
+            {
+                over "polySurface421_lambert1_0"
+                {
+                    over "polySurface421_lambert1_0" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/_materials/lambert1> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+            }
+
+            over "polySurface418"
+            {
+                over "polySurface418_lambert2_0"
+                {
+                    over "polySurface418_lambert2_0" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/_materials/lambert2> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+            }
+
+            over "polySurface420"
+            {
+                over "polySurface420_lambert2_0"
+                {
+                    over "polySurface420_lambert2_0" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/_materials/lambert2> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+            }
+
+            over "polySurface419"
+            {
+                over "polySurface419_lambert2_0"
+                {
+                    over "polySurface419_lambert2_0" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/_materials/lambert2> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+            }
+
+            over "polySurface417"
+            {
+                over "polySurface417_lambert2_0"
+                {
+                    over "polySurface417_lambert2_0" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/_materials/lambert2> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+            }
+
+            over "polySurface416"
+            {
+                over "polySurface416_lambert2_0"
+                {
+                    over "polySurface416_lambert2_0" (
+                        prepend apiSchemas = ["MaterialBindingAPI"]
+                    )
+                    {
+                        rel material:binding = </Root/_materials/lambert2> (
+                            bindMaterialAs = "weakerThanDescendants"
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    def "_materials" (
+        references = </Root/handlePart/offset_bak/rod6_1/_materials>
+    )
+    {
+        def Material "lambert2"
+        {
+            token outputs:surface.connect = </Root/_materials/lambert2/Principled_BSDF.outputs:surface>
+
+            def Shader "Principled_BSDF"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                float inputs:clearcoat = 0
+                float inputs:clearcoatRoughness = 0.03
+                color3f inputs:diffuseColor = (0.012071265, 0.012071265, 0.012071265)
+                color3f inputs:emissiveColor = (0, 0, 0)
+                float inputs:ior = 1.45
+                float inputs:metallic = 0
+                float inputs:opacity = 1
+                float inputs:roughness = 0.6
+                float inputs:specular = 0.5
+                token outputs:surface
+            }
+        }
+
+        def Material "lambert1"
+        {
+            token outputs:surface.connect = </Root/_materials/lambert1/Principled_BSDF.outputs:surface>
+
+            def Shader "Principled_BSDF"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                float inputs:clearcoat = 0
+                float inputs:clearcoatRoughness = 0.03
+                color3f inputs:diffuseColor = (0.034317836, 0.034317836, 0.034317836)
+                color3f inputs:emissiveColor = (0, 0, 0)
+                float inputs:ior = 1.45
+                float inputs:metallic = 0
+                float inputs:opacity = 1
+                float inputs:roughness = 0.52610517
+                float inputs:specular = 0.5
+                token outputs:surface
+            }
+        }
+
+        def Material "phong2"
+        {
+            token outputs:surface.connect = </Root/_materials/phong2/Principled_BSDF.outputs:surface>
+
+            def Shader "Principled_BSDF"
+            {
+                uniform token info:id = "UsdPreviewSurface"
+                float inputs:clearcoat = 0
+                float inputs:clearcoatRoughness = 0.03
+                color3f inputs:diffuseColor = (0.11163313, 0.11163313, 0.11163313)
+                color3f inputs:emissiveColor = (0, 0, 0)
+                float inputs:ior = 1.45
+                float inputs:metallic = 0.71512955
+                float inputs:opacity = 1
+                float inputs:roughness = 0.5043826
+                float inputs:specular = 0.5
+                token outputs:surface
+            }
+        }
+    }
+}
+
