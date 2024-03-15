@@ -23,7 +23,7 @@ struct AboutView: View {
 
                 If you liked this and have an opening for a mobile dev, I would love to join your team!
                 3 YoE, 2 yrs as a mobile dev (Flutter/Dart). Based in Portland 🌲
-                Got something exciting to work on or want to yell at me? ed@noble9.io or [(portfolio)](https://osv22.github.io) - Ahmed 😀
+                Got something exciting to work on or want to yell at me? ed@noble9.io or [(portfolio)](https://ahmedg.pages.dev) - Ahmed 😀
                 """)
                 .accentColor(.cyan)
                 
@@ -37,18 +37,18 @@ struct AboutView: View {
                     - As a result, the scoreboard is attached to your head when opting to use a 'Real' vacuum.
                 """)
                 
-                Spacer()
-                Spacer()
-                
-                Text("Contributions")
-                    .font(.title3)
-                Text("""
-                If you want to help add some features or contribute in any way, you're welcome to send a PR!
-                Here's the repo: [Vision Vacuum on GitHub](https://github.com/osV22/SpatialSweeper)
-                Could especially use help with improving hand tracking issues for the real vacuum method, as vacuum handles covering a portion of your hand can cause erratic tracking behavior.
-                """)
-                .accentColor(.cyan)
-                
+//                Spacer()
+//                Spacer()
+//                
+//                Text("Contributions")
+//                    .font(.title3)
+//                Text("""
+//                If you want to help add some features or contribute in any way, you're welcome to send a PR!
+//                Here's the repo: [Spatial Vacuum on GitHub](https://github.com/osV22/SpatialSweeper)
+//                Could especially use help with improving hand tracking issues for the real vacuum method, as vacuum handles covering a portion of your hand can cause erratic tracking behavior.
+//                """)
+//                .accentColor(.cyan)
+//                
                 Spacer()
                 Spacer()
                 

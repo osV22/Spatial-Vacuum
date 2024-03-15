@@ -14,6 +14,7 @@ struct SpatialSweeperApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(viewModel: viewModel)
+                .frame(minWidth: 640, minHeight: 500)
         }
 
         ImmersiveSpace(id: "ImmersiveSpace") {

@@ -10,7 +10,7 @@
 
 def Xform "Root"
 {
-    reorder nameChildren = ["coin", "SparkMaterial"]
+    reorder nameChildren = ["coin_collect_sound_mp3", "coin"]
     def "coin" (
         active = true
         references = @RawCoin.usdz@
@@ -100,6 +100,11 @@ def Xform "Root"
                 }
             }
         }
+    }
+
+    def RealityKitAudioFile "coin_collect_sound_mp3"
+    {
+        uniform asset file = @coin_collect_sound.mp3@
     }
 }
 

@@ -11,7 +11,6 @@ import RealityKit
 import RealityKitContent
 import Combine
 import ARKit
-import AVFoundation
 
 @MainActor
 protocol SceneControllerProtocol {
@@ -27,7 +26,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         
     @Published var score: Int = 0
     
-    var coinSound: AudioResource?
+    private var coinSound: AudioFileResource?
     
     struct CoinPlacement {
         var position: SIMD3<Float>
@@ -37,8 +36,6 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         // vert positions
         let positions: [SIMD3<Float>]
     }
-    
-    
     
     private lazy var controllerRoot: Entity = {
         var result = Entity()
@@ -69,14 +66,15 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     private var coinCollisionGroup = CollisionGroup(rawValue: 1 << 0)
     private var vacuumCollisionGroup = CollisionGroup(rawValue: 1 << 1)
     
+    private var setupTask: Task<Void, Error>? = nil
+    private var updateTask: Task<Void, Never>? = nil
+    
     init() {}
     
     public func firstInit(_ content: inout RealityViewContent, attachments: RealityViewAttachments, vacuumType: VacuumType) async {
-
+        
         RotateSystem.registerSystem()
         RotateComponent.registerComponent()
-        
-    
         
         content.add(controllerRoot)
         
@@ -91,9 +89,8 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         
         _ = content.subscribe(to: CollisionEvents.Began.self, on: nil, self.onCollisionBegan)
         
-        preloadAudioResource()
         
-        Task {
+        setupTask = Task {
             do {
                 try await session.run([worldTracking, handTracking, sceneReconstruction])
             } catch {
@@ -101,7 +98,7 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
             }
         }
         
-        Task {
+        updateTask = Task {
             for await update in sceneReconstruction.anchorUpdates {
                 let meshAnchor = update.anchor
                 
@@ -109,45 +106,45 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                 guard let shape = try? await ShapeResource.generateStaticMesh(from: meshAnchor) else { continue }
                 
                 switch update.event {
-                    case .added:
-                        // same as normal entity but it has a model component
-                        let entity = ModelEntity()
-                        entity.transform = Transform(matrix: meshAnchor.originFromAnchorTransform)
-                        // isStatic helps with resource optimization
-                        entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
-                        entity.collision?.filter.group = .sceneUnderstanding
-                        
+                case .added:
+                    // same as normal entity but it has a model component
+                    let entity = ModelEntity()
+                    entity.transform = Transform(matrix: meshAnchor.originFromAnchorTransform)
+                    // isStatic helps with resource optimization
+                    entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
+                    entity.collision?.filter.group = .sceneUnderstanding
+                    
                     if let classes = getClasses(meshAnchor: meshAnchor),
-                            let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
-                            // Occlusion material will hide any content behind our scene mesh
+                       let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
+                        // Occlusion material will hide any content behind our scene mesh
                         let modelComponent = ModelComponent(mesh: meshResource, materials: [OcclusionMaterial()])
-                            entity.components.set(modelComponent)
+                        entity.components.set(modelComponent)
                         
-                            updateCoinGrid(meshAnchor: meshAnchor, classes: classes)
-                        }
-                        meshEntities[meshAnchor.id] = entity
-                        controllerRoot.addChild(entity)
-                        
-                    case .updated:
-                        guard let entity = meshEntities[meshAnchor.id] else { continue }
-                        
-                        entity.transform = Transform(matrix: meshAnchor.originFromAnchorTransform)
-                        entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
-                        entity.collision?.filter.group = .sceneUnderstanding
-
-                        
+                        updateCoinGrid(meshAnchor: meshAnchor, classes: classes)
+                    }
+                    meshEntities[meshAnchor.id] = entity
+                    controllerRoot.addChild(entity)
+                    
+                case .updated:
+                    guard let entity = meshEntities[meshAnchor.id] else { continue }
+                    
+                    entity.transform = Transform(matrix: meshAnchor.originFromAnchorTransform)
+                    entity.collision = CollisionComponent(shapes: [shape], isStatic: true)
+                    entity.collision?.filter.group = .sceneUnderstanding
+                    
+                    
                     if let classes = getClasses(meshAnchor: meshAnchor),
-                            let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
-                            let modelComponent = ModelComponent(mesh: meshResource, materials: [OcclusionMaterial()])
-                            entity.components.set(modelComponent)
+                       let meshResource = getMeshResourceFromAnchor(meshAnchor: meshAnchor) {
+                        let modelComponent = ModelComponent(mesh: meshResource, materials: [OcclusionMaterial()])
+                        entity.components.set(modelComponent)
                         
-                            updateCoinGrid(meshAnchor: meshAnchor, classes: classes)
-                        }
-                        
-                    case .removed:
-                        // remove from parent in this case the root controller
-                        meshEntities[meshAnchor.id]?.removeFromParent()
-                        meshEntities.removeValue(forKey: meshAnchor.id)
+                        updateCoinGrid(meshAnchor: meshAnchor, classes: classes)
+                    }
+                    
+                case .removed:
+                    // remove from parent in this case the root controller
+                    meshEntities[meshAnchor.id]?.removeFromParent()
+                    meshEntities.removeValue(forKey: meshAnchor.id)
                     
                 }
             }
@@ -159,38 +156,14 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
         
         await setupSceneFirstTime(vacuumType: vacuumType)
     }
-    
-    func preloadAudioResource() {
-        guard let audioFileURL = Bundle.main.url(forResource: "coin_collect", withExtension: "mp3") else {
-            print("Audio file not found")
-            return
-        }
 
-        do {
-            coinSound = try AudioFileResource.load(contentsOf: audioFileURL, withName: "coinSound")
-        } catch {
-            print("Failed to load audio file: \(error)")
-        }
-    }
-
-   
-    private func playSound(for entity: Entity) {
-        guard let audioResource = coinSound else {
-            print("Audio resource not preloaded")
-            return
-        }
-
-        entity.playAudio(audioResource)
-        // TODO: Will add playback controller (volume, etc)
-    }
-
-    
     private func onCollisionBegan(event: CollisionEvents.Began) {
         if event.entityA.name == "coin" {
             event.entityA.components[RotateComponent.self]?.isCollecting = true
             // play sound
-            
-            playSound(for: event.entityA)
+            if let coinSound = coinSound {
+                event.entityA.playAudio(coinSound)
+            }
             
             score += 1
         }
@@ -422,19 +395,6 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
             }
         }
         
-//        var isVirtual: Bool = false
-//        
-//        if isVirtual {
-//            // old method attached to object
-//            if let headPartModel = headPartModel,
-//               let headContainer = controllerRoot.findEntity(named: "headContainer") {
-//                scoreEntity?.look(at: headPartModel.position, from: headContainer.position, relativeTo: controllerRoot)
-//                scoreEntity?.position = headPartModel.position + .init(x: 0.0, y: 0.3, z: 0.0)
-//            }
-//        } else {
-//            // head tracking moved here
-//        }
-        
         updateCoins()
     }
     
@@ -460,6 +420,10 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
     }
     
     func cleanup() {
+        print("Cleaned Up")
+
+        setupTask?.cancel()
+        updateTask?.cancel()
         mainScene = nil
     }
     
@@ -562,16 +526,12 @@ final class SweeperRealityController: ObservableObject, SceneControllerProtocol 
                 coinModel = coin
             }
         }
-        
         // different assets and mesh collision
-        await vacuumType == .virtual ? useVirtualVacuum() : useRealVacuum()
+        await (vacuumType == .virtual ? useVirtualVacuum() : useRealVacuum())
         
-        
+        coinSound = try? await AudioFileResource(named: "/Root/coin_collect_sound_mp3", from: "SharedAssets.usda", in: realityKitContentBundle)
     }
-
-    
 }
-
 
 extension Entity {
     static func createEntityBox(_ color: UIColor, size: Float) -> Entity {
@@ -580,6 +540,5 @@ extension Entity {
         let modelComponent = ModelComponent(mesh: .generateBox(size: size), materials: [UnlitMaterial(color: color)])
         box.components.set(modelComponent)
         return box
-        
     }
 }

@@ -16,10 +16,3 @@ struct ContentView: View {
         HomeView(viewModel: viewModel)
     }
 }
-
-enum VacuumType: String, CaseIterable, Identifiable {
-    case virtual = "Virtual"
-    case real = "Real"
-    
-    var id: String { self.rawValue }
-}

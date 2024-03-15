@@ -13,11 +13,8 @@ struct HomeView: View {
     
     @State private var showImmersiveSpace = false
     @State private var immersiveSpaceIsShown = false
-    
-    @State private var selectedVacuumType: VacuumType = .virtual
-    
+        
     @State private var isShowingAboutView = false
-    
     
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
@@ -25,21 +22,23 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                CenteredTitle("Vision Vacuum")
+                CenteredTitle("Spatial Vacuum")
+                    .padding(.vertical, 10)
                 Spacer()
-                
-                VacuumTypeSelection(selectedVacuumType: $selectedVacuumType, viewModel: viewModel)
-                
-                PlayButton(showImmersiveSpace: $showImmersiveSpace)
-                
-                AboutButton {
-                    isShowingAboutView = true
-                }
+
+                VStack {
+                     VacuumTypeSelection(viewModel: viewModel)
+                     PlayButton(showImmersiveSpace: $showImmersiveSpace)
+                     AboutButton {
+                         isShowingAboutView = true
+                     }
+                 }
+                 .padding(.bottom, 20)
+                 .frame(maxHeight: 540)
                 
                 Spacer()
-                Spacer()
+            
             }
-            .padding()
             .navigationDestination(isPresented: $isShowingAboutView) {
                 AboutView()
             }

@@ -16,7 +16,6 @@
 		EEAF2BA12B99306D00894313 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF2BA02B99306D00894313 /* AppViewModel.swift */; };
 		EEC11E6F2B96FCC700BEB6BE /* RotateComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC11E6E2B96FCC700BEB6BE /* RotateComponent.swift */; };
 		EEC11E712B96FCEF00BEB6BE /* RotateSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC11E702B96FCEF00BEB6BE /* RotateSystem.swift */; };
-		EEC11E732B980C2300BEB6BE /* coin_collect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EEC11E722B980C2300BEB6BE /* coin_collect.mp3 */; };
 		EEC8E24A2B968EC800F4AD4D /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = EEC8E2492B968EC800F4AD4D /* RealityKitContent */; };
 		EEC8E24C2B968EC800F4AD4D /* SpatialSweeperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC8E24B2B968EC800F4AD4D /* SpatialSweeperApp.swift */; };
 		EEC8E24E2B968EC800F4AD4D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC8E24D2B968EC800F4AD4D /* ContentView.swift */; };
@@ -36,7 +35,6 @@
 		EEAF2BA02B99306D00894313 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		EEC11E6E2B96FCC700BEB6BE /* RotateComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateComponent.swift; sourceTree = "<group>"; };
 		EEC11E702B96FCEF00BEB6BE /* RotateSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateSystem.swift; sourceTree = "<group>"; };
-		EEC11E722B980C2300BEB6BE /* coin_collect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = coin_collect.mp3; sourceTree = "<group>"; };
 		EEC8E2442B968EC800F4AD4D /* SpatialSweeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpatialSweeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEC8E2482B968EC800F4AD4D /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		EEC8E24B2B968EC800F4AD4D /* SpatialSweeperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpatialSweeperApp.swift; sourceTree = "<group>"; };
@@ -109,7 +107,6 @@
 				EEC11E6E2B96FCC700BEB6BE /* RotateComponent.swift */,
 				EEC11E702B96FCEF00BEB6BE /* RotateSystem.swift */,
 				EEAF2BA02B99306D00894313 /* AppViewModel.swift */,
-				EEC11E722B980C2300BEB6BE /* coin_collect.mp3 */,
 				EEC8E2512B968ECA00F4AD4D /* Assets.xcassets */,
 				EEC8E2562B968ECA00F4AD4D /* Info.plist */,
 				EEC8E2532B968ECA00F4AD4D /* Preview Content */,
@@ -198,7 +195,6 @@
 			files = (
 				EEC8E2552B968ECA00F4AD4D /* Preview Assets.xcassets in Resources */,
 				EEC8E2522B968ECA00F4AD4D /* Assets.xcassets in Resources */,
-				EEC11E732B980C2300BEB6BE /* coin_collect.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,7 +355,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Vision Vacuum";
+				INFOPLIST_KEY_CFBundleDisplayName = "Spatial Vacuum";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -387,7 +383,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "Vision Vacuum";
+				INFOPLIST_KEY_CFBundleDisplayName = "Spatial Vacuum";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
