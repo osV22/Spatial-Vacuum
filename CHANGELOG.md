@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-build.5] - 2024-03-15
+### Added
+- FAQ with common questions from the Reddit testing thread added at the bottom of the About view
+- Contribution section
+- Privacy Policy added
+
 ## [1.0.0-build.4] - 2024-03-14
 ### Changed
 - App Name/ Display Name changed from "Vision Vacuum" to "Spatial Vacuum" after external review rejected build 3 for the naming convention.
