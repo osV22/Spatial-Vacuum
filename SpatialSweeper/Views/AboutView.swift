@@ -30,25 +30,15 @@ struct AboutView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Small Note...")
+                Text("Contributions")
                     .font(.title3)
                 Text("""
-                Some real vacuum handles may cause erratic behavior with the hand tracking if a portion of your hand is obscured by the handle.
-                    - As a result, the scoreboard is attached to your head when opting to use a 'Real' vacuum.
+                If you want to help add some features or contribute in any way, you're welcome to send a PR!
+                Here's the repo: [Spatial Vacuum on GitHub](https://github.com/osV22/Spatial-Vacuum)
+                Could especially use help with improving hand tracking issues for the real vacuum method, as vacuum handles covering a portion of your hand can cause erratic tracking behavior.
                 """)
+                .accentColor(.cyan)
                 
-//                Spacer()
-//                Spacer()
-//                
-//                Text("Contributions")
-//                    .font(.title3)
-//                Text("""
-//                If you want to help add some features or contribute in any way, you're welcome to send a PR!
-//                Here's the repo: [Spatial Vacuum on GitHub](https://github.com/osV22/SpatialSweeper)
-//                Could especially use help with improving hand tracking issues for the real vacuum method, as vacuum handles covering a portion of your hand can cause erratic tracking behavior.
-//                """)
-//                .accentColor(.cyan)
-//                
                 Spacer()
                 Spacer()
                 
@@ -74,9 +64,19 @@ struct AboutView: View {
                 - N/A
                     - App does not collect any information. Have Fun!
                 """)
-
             }
-            .padding(.bottom, 80)
+            .padding(.bottom, 26)
+            
+            Text("FAQ")
+                .font(.title)
+                                  
+            Faq()
+                .frame(height: 600)
+
+            Text("✌️")
+                .font(.title)
+                .padding(.bottom, 10)
+
         }
         .padding(.horizontal, 40)
     }

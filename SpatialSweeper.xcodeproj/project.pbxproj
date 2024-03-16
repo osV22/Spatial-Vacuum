@@ -13,6 +13,7 @@
 		EE211F2F2B9AD3A500F0E4FF /* CenteredTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE211F2E2B9AD3A500F0E4FF /* CenteredTitle.swift */; };
 		EE211F312B9AD3D000F0E4FF /* PlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE211F302B9AD3D000F0E4FF /* PlayButton.swift */; };
 		EE211F332B9AD3E900F0E4FF /* AboutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE211F322B9AD3E900F0E4FF /* AboutButton.swift */; };
+		EEAADE8A2BA53C66003516D0 /* Faq.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAADE892BA53C66003516D0 /* Faq.swift */; };
 		EEAF2BA12B99306D00894313 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEAF2BA02B99306D00894313 /* AppViewModel.swift */; };
 		EEC11E6F2B96FCC700BEB6BE /* RotateComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC11E6E2B96FCC700BEB6BE /* RotateComponent.swift */; };
 		EEC11E712B96FCEF00BEB6BE /* RotateSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC11E702B96FCEF00BEB6BE /* RotateSystem.swift */; };
@@ -32,6 +33,7 @@
 		EE211F2E2B9AD3A500F0E4FF /* CenteredTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredTitle.swift; sourceTree = "<group>"; };
 		EE211F302B9AD3D000F0E4FF /* PlayButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayButton.swift; sourceTree = "<group>"; };
 		EE211F322B9AD3E900F0E4FF /* AboutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutButton.swift; sourceTree = "<group>"; };
+		EEAADE892BA53C66003516D0 /* Faq.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Faq.swift; sourceTree = "<group>"; };
 		EEAF2BA02B99306D00894313 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		EEC11E6E2B96FCC700BEB6BE /* RotateComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateComponent.swift; sourceTree = "<group>"; };
 		EEC11E702B96FCEF00BEB6BE /* RotateSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RotateSystem.swift; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				EE211F2E2B9AD3A500F0E4FF /* CenteredTitle.swift */,
 				EE211F302B9AD3D000F0E4FF /* PlayButton.swift */,
 				EE211F322B9AD3E900F0E4FF /* AboutButton.swift */,
+				EEAADE892BA53C66003516D0 /* Faq.swift */,
 			);
 			path = "View Components";
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				EE211F2A2B9A85A000F0E4FF /* AboutView.swift in Sources */,
 				EEC8E2632B969E5100F4AD4D /* SweeperRealityController.swift in Sources */,
 				EE211F282B9A80CB00F0E4FF /* HomeView.swift in Sources */,
+				EEAADE8A2BA53C66003516D0 /* Faq.swift in Sources */,
 				EEC8E2502B968EC800F4AD4D /* ImmersiveView.swift in Sources */,
 				EE211F2F2B9AD3A500F0E4FF /* CenteredTitle.swift in Sources */,
 				EEC11E6F2B96FCC700BEB6BE /* RotateComponent.swift in Sources */,
