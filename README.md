@@ -1,7 +1,7 @@
 # Spatial Vacuum
 Collect coins while cleaning ya room...
 
-[![appstore-badge](https://github.com/osV22/SpatialSweeper/assets/30060025/7127b77c-e947-4838-b91f-089d60b48c28)]()
+[![appstore-badge](https://github.com/osV22/SpatialSweeper/assets/30060025/7127b77c-e947-4838-b91f-089d60b48c28)](https://apps.apple.com/us/app/spatial-vacuum/id6479183992)
 
 
 Note: Entire project is under "Spatial Sweeper" because I was not thinking of releasing the app.
